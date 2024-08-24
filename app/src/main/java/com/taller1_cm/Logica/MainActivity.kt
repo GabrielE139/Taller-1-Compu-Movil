@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
     private fun operandingButton1(context: Context, spinner: Spinner, activityClass: Class<*>) {
         val peticion1 = Intent(context, activityClass) //Peticion a Destinos
         val categoria = spinner.selectedItem.toString()
-        peticion1.putExtra("Categoria spinner", categoria)
+        peticion1.putExtra("categoria", categoria)
         context.startActivity(peticion1)
     }
         companion object Favoritos {
