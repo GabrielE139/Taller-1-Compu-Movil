@@ -41,7 +41,7 @@ class FavoritosActivity : AppCompatActivity() {
                 bolsa.putString("pais", selectedItem.pais)
                 bolsa.putString("categoria", selectedItem.categoria)
                 bolsa.putString("plan", selectedItem.plan)
-                bolsa.putInt("precio", selectedItem.precio)
+                selectedItem.precio?.let { bolsa.putInt("precio", it) }
                 peticion.putExtras(bolsa)
                 startActivity(peticion)
             }
