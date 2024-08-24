@@ -1,17 +1,18 @@
 package com.taller1_cm
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
 import android.widget.Spinner
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
+
+    var categoriaSeleccionada: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,12 +24,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
         val boton2 = findViewById<Button>(R.id.button2_Favoritos)
         val boton3 = findViewById<Button>(R.id.button3_Recomendaciones)
 
-        val peticion1 = Intent(this,DestinosActivity::class.java) //Peticion a Destinos
         val peticion2 = Intent(this,FavoritosActivity::class.java) //Peticion a Favoritos
         val peticion3 = Intent(this,RecomendacionesActivity::class.java) //Peticion a Recomendaciones
 
-        boton1.setOnClickListener(){ //Ir a Destinos
-            startActivity(peticion1)
+        boton1.setOnClickListener(){ //Ir a Destino
+            operandingButton1(this, spinner, DestinosActivity::class.java)
         }
         boton2.setOnClickListener(){ //Ir a Favoritos
             startActivity(peticion2)
@@ -39,11 +39,14 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
     }
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-
-
     }
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
-
 }
+ private fun operandingButton1(context:Context,spinner: Spinner,  activityClass: Class<*>){
+     val peticion1 = Intent(context,activityClass) //Peticion a Destinos
+     val categoria = spinner.selectedItem.toString()
+     peticion1.putExtra("Categoria spinner",categoria)
+     context.startActivity(peticion1)
+ }
