@@ -8,8 +8,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.taller1_cm.Data.Destino
 import com.taller1_cm.R
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
 
 class DetallesActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detalles)
@@ -22,6 +25,8 @@ class DetallesActivity : AppCompatActivity() {
         val bolsa = intent.getBundleExtra("info")
 
         setStrings(nombre, pais, categoria,plan,precio,bolsa)
+
+
         botonFav.setOnClickListener {
             addFavorite(bolsa)
         }
@@ -34,6 +39,35 @@ class DetallesActivity : AppCompatActivity() {
         plan.setText(bolsa?.getString("plan"))
         var precioInt = bolsa?.getInt("precio")
         precio.setText("USD" + precioInt.toString())
+        obtenerClima(nombre.text.toString())
+    }
+
+    private fun obtenerClima(city: String) {
+        val clima = findViewById<TextView>(R.id.climaDetalles)
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.weatherapi.com/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(IWeatherService::class.java)
+        val call = service.getCurrentWeather(city, "7dc64ee5f1934d7cabe193311242702")
+
+        call.enqueue(object : Callback<WeatherResponse> {
+            override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse>) {
+                if (response.isSuccessful) {
+                    val weatherData = response.body()
+                    if (weatherData != null) {
+                        clima.text = weatherData.current.temp_c.toString() + " °C"
+                    }
+                } else {
+                    clima.text = "No se pudo obtener el clima"
+                }
+            }
+
+            override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
+                clima.text = "No se pudo obtener el clima"
+            }
+        })
     }
 
     private fun addFavorite (bolsa: Bundle?){
