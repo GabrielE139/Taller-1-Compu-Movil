@@ -62,7 +62,7 @@ class DetallesActivity : AppCompatActivity() {
             MainActivity.Favoritos.listaFavs.add(temporal)
             Toast.makeText(baseContext, "Se ha añadido el destino a su lista de favoritos", Toast.LENGTH_LONG).show()
         }
-        val peticion1 = Intent(this, DestinosActivity::class.java)
+        val peticion1 = Intent(this, MainActivity::class.java)
         startActivity(peticion1)
     }
 }
