@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Categorias">
+        <item>Todos</item>
+        <item>Playas</item>
+        <item>Montañas</item>
+        <item>Ciudades Historicas</item>
+        <item>Maravillas del Mundo</item>
+        <item>Selvas</item>
+    </string-array>
+</resources>
