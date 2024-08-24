@@ -1,4 +1,4 @@
-package com.taller1_cm
+package com.taller1_cm.Logica
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.taller1_cm.R
+import com.taller1_cm.Data.Destino
+
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,9 +26,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
         val boton2 = findViewById<Button>(R.id.button2_Favoritos)
         val boton3 = findViewById<Button>(R.id.button3_Recomendaciones)
 
-        val peticion1 = Intent(this,DestinosActivity::class.java) //Peticion a Destinos
-        val peticion2 = Intent(this,FavoritosActivity::class.java) //Peticion a Favoritos
-        val peticion3 = Intent(this,RecomendacionesActivity::class.java) //Peticion a Recomendaciones
+        val peticion1 = Intent(this, DestinosActivity::class.java) //Peticion a Destinos
+        val peticion2 = Intent(this, FavoritosActivity::class.java) //Peticion a Favoritos
+        val peticion3 = Intent(this, RecomendacionesActivity::class.java) //Peticion a Recomendaciones
 
         boton1.setOnClickListener(){ //Ir a Destinos
             startActivity(peticion1)
@@ -44,6 +47,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
     }
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
+    }
+
+    companion object Favoritos {
+        val listaFavs: MutableList<Destino> = mutableListOf()
     }
 
 }
