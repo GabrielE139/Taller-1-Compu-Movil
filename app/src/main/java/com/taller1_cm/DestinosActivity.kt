@@ -22,33 +22,36 @@ class DestinosActivity: AppCompatActivity() {
         val arreglo = loadDestinos(categoria)
 
         val lista = findViewById<ListView>(R.id.listViewDes)
-        val adaptador = ArrayAdapter(baseContext, android.R.layout.simple_list_item_1, arreglo)
+        val adaptador = ArrayAdapter(baseContext, android.R.layout.simple_list_item_1, arreglo.map { it.getString("nombre") })
         lista.adapter = adaptador
-        setupItemClickListener(lista)
+        setupItemClickListener(lista, arreglo)
     }
 
-    private fun loadDestinos(categoria: String): MutableList<String> {
+    private fun loadDestinos(categoria: String): MutableList<JSONObject> {
         val json = JSONObject(loadJSONFromAsset())
         val paisesJson = json.getJSONArray("destinos")
-        val arreglo = mutableListOf<String>()
+        val arreglo = mutableListOf<JSONObject>()
 
         for (i in 0 until paisesJson.length()) {
             val jsonObject = paisesJson.getJSONObject(i)
             if (categoria == "Todos" || jsonObject.getString("categoria") == categoria) {
-                arreglo.add(jsonObject.getString("nombre"))
+                arreglo.add(jsonObject)
             }
         }
         return arreglo
     }
 
-    private fun setupItemClickListener(lista: ListView) {
-        val peticion = Intent(this, DetallesActivity::class.java)
-        val bolsa = Bundle()
-
+    private fun setupItemClickListener(lista: ListView, destinos: List<JSONObject>) {
         lista.setOnItemClickListener(object: AdapterView.OnItemClickListener {
             override fun onItemClick(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                val selectedItem = parent?.getItemAtPosition(pos).toString()
-                bolsa.putString("nombre", selectedItem)
+                val selectedItem = destinos[pos]
+                val peticion = Intent(this@DestinosActivity, DetallesActivity::class.java)
+                val bolsa = Bundle()
+                bolsa.putString("nombre", selectedItem.getString("nombre"))
+                bolsa.putString("pais", selectedItem.getString("pais"))
+                bolsa.putString("categoria", selectedItem.getString("categoria"))
+                bolsa.putString("plan", selectedItem.getString("plan"))
+                bolsa.putInt("precio", selectedItem.getInt("precio"))
                 peticion.putExtras(bolsa)
                 startActivity(peticion)
             }
@@ -70,6 +73,4 @@ class DestinosActivity: AppCompatActivity() {
         }
         return json
     }
-
-
 }
