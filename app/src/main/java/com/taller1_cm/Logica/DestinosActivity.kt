@@ -17,15 +17,17 @@ class DestinosActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_destinos)
 
-        //val categoria = intent.getStringExtra("categoria")
+        val categoria = intent.getStringExtra("categoria")
 
-        val categoria = "Todos"
-        val arreglo = loadDestinos(categoria)
+        val arreglo = categoria?.let { loadDestinos(it) }
 
         val lista = findViewById<ListView>(R.id.listViewDes)
-        val adaptador = ArrayAdapter(baseContext, android.R.layout.simple_list_item_1, arreglo.map { it.getString("nombre") })
+        val adaptador =
+            arreglo?.let { ArrayAdapter(baseContext, android.R.layout.simple_list_item_1, it.map { it.getString("nombre") }) }
         lista.adapter = adaptador
-        setupItemClickListener(lista, arreglo)
+        if (arreglo != null) {
+            setupItemClickListener(lista, arreglo)
+        }
     }
 
     private fun loadDestinos(categoria: String): MutableList<JSONObject> {
