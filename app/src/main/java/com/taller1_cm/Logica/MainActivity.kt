@@ -1,5 +1,6 @@
 package com.taller1_cm.Logica
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -26,12 +27,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
         val boton2 = findViewById<Button>(R.id.button2_Favoritos)
         val boton3 = findViewById<Button>(R.id.button3_Recomendaciones)
 
-        val peticion1 = Intent(this, DestinosActivity::class.java) //Peticion a Destinos
+
         val peticion2 = Intent(this, FavoritosActivity::class.java) //Peticion a Favoritos
         val peticion3 = Intent(this, RecomendacionesActivity::class.java) //Peticion a Recomendaciones
 
         boton1.setOnClickListener(){ //Ir a Destinos
-            startActivity(peticion1)
+            operandingButton1(this, spinner, DestinosActivity::class.java)
         }
         boton2.setOnClickListener(){ //Ir a Favoritos
             startActivity(peticion2)
@@ -49,7 +50,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener{
 
     }
 
-    companion object Favoritos {
+    private fun operandingButton1(context: Context, spinner: Spinner, activityClass: Class<*>) {
+        val peticion1 = Intent(context, activityClass) //Peticion a Destinos
+        val categoria = spinner.selectedItem.toString()
+        peticion1.putExtra("Categoria spinner", categoria)
+        context.startActivity(peticion1)
+    }
+        companion object Favoritos {
         val listaFavs: MutableList<Destino> = mutableListOf()
     }
 
