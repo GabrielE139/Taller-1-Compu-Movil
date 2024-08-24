@@ -1,9 +1,12 @@
 package com.taller1_cm.Logica
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.taller1_cm.Data.Destino
 import com.taller1_cm.R
 
 class DetallesActivity : AppCompatActivity() {
@@ -19,7 +22,9 @@ class DetallesActivity : AppCompatActivity() {
         val bolsa = intent.getBundleExtra("info")
 
         setStrings(nombre, pais, categoria,plan,precio,bolsa)
-        botonFav.setOnClickListener {  }
+        botonFav.setOnClickListener {
+            addFavorite(bolsa)
+        }
     }
 
     private fun setStrings (nombre: TextView, pais: TextView, categoria: TextView, plan:TextView, precio:TextView, bolsa: Bundle?){
@@ -31,7 +36,33 @@ class DetallesActivity : AppCompatActivity() {
         precio.setText("USD" + precioInt.toString())
     }
 
-    private fun addFavorite (){
-
+    private fun addFavorite (bolsa: Bundle?){
+        var bandera = false
+        var nombre = bolsa?.getString("nombre")
+        var pais = bolsa?.getString("pais")
+        var categoria = bolsa?.getString("categoria")
+        var plan = bolsa?.getString("plan")
+        var precio = bolsa?.getInt("precio")
+        for(i in 0 until MainActivity.Favoritos.listaFavs.size){
+            if(MainActivity.Favoritos.listaFavs[i].nombre == nombre){
+                    bandera = true
+            }
+        }
+        if(bandera){
+            Toast.makeText(baseContext, "El destino ya está en su lista de favoritos", Toast.LENGTH_LONG).show()
+        }
+        else{
+            val temporal:Destino = Destino(
+                nombre = nombre,
+                pais = pais,
+                categoria = categoria,
+                plan = plan,
+                precio = precio
+            )
+            MainActivity.Favoritos.listaFavs.add(temporal)
+            Toast.makeText(baseContext, "Se ha añadido el destino a su lista de favoritos", Toast.LENGTH_LONG).show()
+        }
+        val peticion1 = Intent(this, DestinosActivity::class.java)
+        startActivity(peticion1)
     }
 }
